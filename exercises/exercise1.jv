@@ -84,8 +84,8 @@ pipeline AirportsPipeline {
       "Land" oftype text,
       "IATA" oftype text,
       "ICAO" oftype text,
-      "Latitude" oftype text,//decimal,
-      "Longitude" oftype text,//decimal,
+      "Latitude" oftype decimal,
+      "Longitude" oftype decimal,
       "Altitude" oftype integer,
 
     //   "Zeitzone" oftype decimal, //double
