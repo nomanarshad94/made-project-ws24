@@ -1,0 +1,86 @@
+// SPDX-FileCopyrightText: 2023 Friedrich-Alexander-Universitat Erlangen-Nurnberg
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
+// Exercise 2: Tree Planting 
+
+// This Jayvee model describes a pipeline 
+// from a CSV file in the web 
+// to a SQLite file sink.
+pipeline TreesPipeline {
+
+  TreesExtractor
+    -> TreesTextFileInterpreter;
+
+  // The output of the preceding block is hereby used 
+  // as input for the succeeding block.
+
+  TreesTextFileInterpreter
+    -> TreesCSVInterpreter
+    -> TreesTableInterpreter
+    -> TreesLoader;
+
+
+  block TreesExtractor oftype HttpExtractor {
+
+    // Here, we specify the URL where the file shall be downloaded from.
+    url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv";
+  }
+
+  // 4. The HttpExtractor requires no input and produces a binary file as output.
+  // This file has to be interpreted, e.g., as text file.
+  block TreesTextFileInterpreter oftype TextFileInterpreter { }
+
+  // Next, we interpret the text file as sheet.
+  // A sheet only contains text cells and is useful for manipulating the shape of data before assigning more strict value types to cells.
+  block TreesCSVInterpreter oftype CSVInterpreter {
+    delimiter: ";";
+  }
+
+
+  // As a next step, we interpret the sheet as a table by adding structure.
+  // We define a value type per column that specifies the data type of the column.
+  // Rows that include values that are not valid according to the their value types are dropped automatically. 
+  block TreesTableInterpreter oftype TableInterpreter {
+    header: true;
+    columns: [
+      "lfd_nr" oftype integer,
+      "stadtteil" oftype StadtVogelsang,
+      "standort" oftype text,
+      "baumart_botanisch" oftype text,
+      "id" oftype GeoCoordinates,
+      "baumfamilie" oftype text
+    ];
+  }
+
+  // Now, we load the table into a sink,
+  // here into a sqlite file.
+  // The structural information of the table is used
+  // to generate the correct table.
+  block TreesLoader oftype SQLiteLoader {
+    table: "trees";
+    file: "./trees.sqlite";
+  }
+  // Define permitive type for id and stadtteil on text with regex constraints
+  valuetype GeoCoordinates oftype text {
+    constraints: [ GeoCoordinatesRegex ];
+    }
+    
+  valuetype StadtVogelsang oftype text {
+    constraints: [ StartsWithVogelsang ];
+    
+    }
+
+  // Define regex constraint with required regex pattern to extract text from  stadtteil starting with Vogelsang 
+  constraint StartsWithVogelsang oftype RegexConstraint {
+    regex: /^Vogelsang/;
+  }
+
+  // Define regex constraint with required regex pattern to extract geo coordinates from  id with format: {geo-coordinate 1}, {geo-coordinate 2}
+  //a geo-coordinate is defined as {1-3 numbers}.{numbers}
+ 
+  constraint GeoCoordinatesRegex oftype RegexConstraint {
+    regex: /^\d{1,3}\.\d+,\s?\d{1,3}\.\d+$/;
+  }
+
+}
