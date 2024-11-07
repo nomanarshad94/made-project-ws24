@@ -37,7 +37,19 @@ The dataset icludes population density distribution over the region of America.
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
-1. Example Issue [#1][i1]
-2. ...
+1. Initial Planning & Preparation: Define objectives, tasks and tools.
+2. Data Gathering: Explore Suitable Dataset [#1][i1].
+3. Data Collection: Finalise datasets and extract it.
+4. Data Pre-processing: clean datasets.
+5. EDA: Analyze trends and visualize data.
+6. Correlation Analysis: Study relationships between variables.
+7. Data Transformation: Join datasets from multiple sources based on common identifiers and apply transformations.
+8. Reporting: Compile findings and present recommendations.
+9. Project Review: Assess outcomes and lessons learned.
+10. Future Enhancements: Future work.
+
+
+
+
 
 [i1]: https://github.com/jvalue/made-template/issues/1
