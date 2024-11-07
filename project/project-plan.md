@@ -19,14 +19,14 @@ This project examines how population density in rural and urban regions across A
 
 <!-- Describe each datasources you plan to use in a section. Use the prefic "DatasourceX" where X is the id of the datasource. -->
 
-### Datasource1: ExampleSource
+### Datasource1: 
 * Metadata URL: [Startup Data viewer](https://www.kaggle.com/datasets/arindam235/startup-investments-crunchbase)
 * Data URL: [Startup Data](https://www.kaggle.com/datasets/arindam235/startup-investments-crunchbase)
 * Data Type: CSV
 
 The investments series at a company level are given. 
 
-### Datasource2: ExampleSource
+### Datasource2: 
 * Metadata URL: [America population distribution](https://sedac.ciesin.columbia.edu/data/set/grump-v1-national-identifier-grid/)
 * Data URL: [America population distribution](https://sedac.ciesin.columbia.edu/data/set/grump-v1-national-identifier-grid/)
 * Data Type: CSV
