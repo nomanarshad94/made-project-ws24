@@ -2,7 +2,7 @@
 
 ## Title
 <!-- Give your project a short title. -->
-Economic Outcomes of Population Density in America:
+Economic Outcomes based on Population Density in America:
 
 ## Main Question
 
