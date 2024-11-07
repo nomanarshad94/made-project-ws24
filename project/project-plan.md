@@ -37,19 +37,24 @@ The dataset icludes population density distribution over the region of America.
 
 <!-- List of work packages ordered sequentially, each pointing to an issue with more details. -->
 
-1. Initial Planning & Preparation: Define objectives, tasks and tools.
-2. Data Gathering: Explore Suitable Dataset [#1][i1].
-3. Data Collection: Finalise datasets and extract it.
-4. Data Pre-processing: clean datasets.
-5. EDA: Analyze trends and visualize data.
-6. Correlation Analysis: Study relationships between variables.
-7. Data Transformation: Join datasets from multiple sources based on common identifiers and apply transformations.
-8. Reporting: Compile findings and present recommendations.
-9. Project Review: Assess outcomes and lessons learned.
-10. Future Enhancements: Future work.
+1. Initial Planning & Preparation: Define objectives, tasks and tools [#1][i1].
+2. Data Collection: Explore, finalize datasets and extract it [#2][i2].
+3. Data Analysis & Pre-processing: Explore finalized datasets and pre-process it [#3][i3].
+4. EDA: Analyze trends and visualize data [#4][i4].
+5. Correlation Analysis: Study relationships between variables and datasets [#5][i5].
+6. Data Transformation: Join datasets from multiple sources based on common identifiers and apply necessary transformations [#6][i6].
+7. Findings & Reporting: Compile findings and present recommendations [#7][i7].
+8. Project Review: Assess outcomes and lessons learned [#8][i8].
+9. Future Enhancements: Future work [#9][i9].
 
 
 
-
-
-[i1]: https://github.com/jvalue/made-template/issues/1
+[i1]: https://github.com/nomanarshad94/made-project-ws24/issues/1
+[i2]: https://github.com/nomanarshad94/made-project-ws24/issues/2
+[i3]: https://github.com/nomanarshad94/made-project-ws24/issues/3
+[i4]: https://github.com/nomanarshad94/made-project-ws24/issues/4
+[i5]: https://github.com/nomanarshad94/made-project-ws24/issues/5
+[i6]: https://github.com/nomanarshad94/made-project-ws24/issues/6
+[i7]: https://github.com/nomanarshad94/made-project-ws24/issues/7
+[i8]: https://github.com/nomanarshad94/made-project-ws24/issues/8
+[i9]: https://github.com/nomanarshad94/made-project-ws24/issues/9
