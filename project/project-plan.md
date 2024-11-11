@@ -2,12 +2,12 @@
 
 ## Title
 <!-- Give your project a short title. -->
-Economic Outcomes based on Population Density in America:
+Economic Outcomes based on Population Density in Americas
 
 ## Main Question
 
 <!-- Think about one main question you want to answer based on the data. -->
-1. How does population density in rural and urban areas across North and South America influence overall financial activity, the number of startups, and their economic impact on GDP of America?
+1. How does population density in rural and urban areas across North and South America influence overall financial activity, the number of startups, and their economic impact on GDP of the American continent?
 
 
 ## Description
