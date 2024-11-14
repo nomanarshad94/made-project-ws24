@@ -35,13 +35,14 @@ class ETLPipeline:
     def extract(self,del_tmp_files):
         """Extract data from online sources/apis in dataframe and return pandas dataframes for each file"""
         try:
-            
+            api = KaggleApi()
             # Download the dataset from Kaggle
             for i,dataset in enumerate(self.datasets):
                 try:
                     api.dataset_download_files(self.datasets[i], path=self.source_file_paths[i], unzip=True,force=True)
                 except Exception as e:
                     logging.error(f"Failed to download data from {dataset}: {e}")
+                    raise
             logging.info(f"Successfully downloaded data files")
             
             dfs = []
@@ -50,6 +51,7 @@ class ETLPipeline:
                     dfs.append(pd.read_csv(os.path.join(self.source_file_paths[i], self.csv_names[i]),encoding=self.kaggle_encoding))
                 except Exception as e:
                     logging.error(f"Failed to create dataframe for {self.csv_names[i]}: {e}")
+                    raise
             logging.info(f"Successfully created dataframes from files")
             
             
@@ -163,7 +165,7 @@ class ETLPipeline:
         try:
 
             final_file_path = os.path.join(destination_path,self.final_data_file_name)
-            final_df.to_csv(final_file_path,index=False)
+            transformed_df.to_csv(final_file_path,index=False)
         except Exception as e:
             logging.error(f"An error occurred while writing df to file: {e}")
             raise
@@ -182,11 +184,11 @@ class ETLPipeline:
             transformed_data_destination = os.path.join(os.path.split(os.getcwd())[0],"data")
             self.load(transformed_df, transformed_data_destination)
             logging.info("ETL process completed successfully.")
-            
+            return transformed_df
+
         except Exception as e:
             logging.error(f"An error occurred during the ETL process: {e}")
-                         
-        return transformed_df
+            raise
 
 
 # Running the ETL pipeline
