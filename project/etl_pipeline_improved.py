@@ -26,7 +26,7 @@ class Config:
     csv_names = [
         "investments_VC.csv",
         "us_income_zipcode.csv",
-        "unicorns_till_sep_2022.csv",
+        "unicorns till sep 2022.csv",
         "uscities.csv"
     ]
     final_data_file_name = "startups_household_income_metropolitan_area.csv"
