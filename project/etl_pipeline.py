@@ -35,8 +35,10 @@ class ETLPipeline:
     def extract(self,del_tmp_files):
         """Extract data from online sources/apis in dataframe and return pandas dataframes for each file"""
         try:
+            logging.info(f"Creating kaggle api client to download data")
             api = KaggleApi()
             # Download the dataset from Kaggle
+            logging.info(f"Fetching datasets from online sources...")
             for i,dataset in enumerate(self.datasets):
                 try:
                     api.dataset_download_files(self.datasets[i], path=self.source_file_paths[i], unzip=True,force=True)

@@ -1,5 +1,5 @@
 #!/bin/bash
-py -3.7 ../project/etl_pipeline.py
+py -3.7 -W ignore ../project/etl_pipeline.py
 
 # As I have multiple python environments so only environement with python 3.7 contains required packages of python for this project.
 # So I have to run pipeline.py file using py -3.7 instead of python3
