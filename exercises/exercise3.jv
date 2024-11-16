@@ -5,7 +5,7 @@
 // Exercise 3: The World Development Report 2022, CountryStats for an Equitable Recovery. 
 
 // This Jayvee model describes a pipeline 
-// from a CSV file in the web 
+// from a xlsx file in the web 
 // to a SQLite file sink.
 pipeline CountryStatsPipeline {
 
@@ -22,6 +22,7 @@ pipeline CountryStatsPipeline {
     -> BondIssuanceTableInterpreter
     -> BondLoader;
 
+  // Separate pipeline for GDP per Capita table
   CountryStatsDataSelector
     -> GdpPerCapitaColumnSelector
     -> GdpPerCapitaTableInterpreter
@@ -34,20 +35,22 @@ pipeline CountryStatsPipeline {
         url: "https://thedocs.worldbank.org/en/doc/7d852628d96b9411d43e5d36d5dff941-0050062022/original/Graphs-Chapter-5-02082022.xlsx";
     }
 
-  // Next, we interpret the text file as sheet.
+  // Next, we interpret the xlsx file as sheet.
   // A sheet only contains text cells and is useful for manipulating the shape of data before assigning more strict value types to cells.
     block CountryStatsXlsxInterpreter oftype XLSXInterpreter { 
 
     }
-
+    // Selected required sheet from xlsx file
     block CountryStatsSheetPicker oftype SheetPicker {
     sheetName: "Figure S5.1.2";
     }
 
+    // selected data by ignoring figure also excluded header row as header assinged in table interpreter block
     block CountryStatsDataSelector oftype CellRangeSelector {
     select: range P3:S45;
     }
 
+    // deleting irrelevant tables using column IDs
     block BondIssuanceColumnSelector oftype ColumnDeleter {
     delete: [column B, column C];
     }
@@ -63,11 +66,7 @@ pipeline CountryStatsPipeline {
     columns: [
         "Country Code" oftype CountryCodeAlpha3,
         "Bond Issuance Share" oftype BondIssuanceShareType
-    ];
-
-    //  Rename header columns: “ISO3” to "Country Code", “GDP per capita (US$, thousands)” to "GDP per Capita", “Share of government sustainable bonds" 
-    //  to "Bond Issuance Share"
-    // “Economy” does not have to be renamed
+        ];
 
     }
   
@@ -77,84 +76,47 @@ pipeline CountryStatsPipeline {
     columns: [
         "Country Code" oftype CountryCodeAlpha3,
         "GDP per Capita" oftype GdpPerCapitaType,
-    ];
+        ];
 
     }
 
-
+    // Setting up value constraints for data validation
     valuetype GdpPerCapitaType oftype decimal {
         constraints: [ GdpPerCapitaConstraint ];
         
-        }
+    }
 
-    // Define regex constraint with required regex pattern to extract text from  stadtteil starting with Vogelsang 
+    // Define constraint expression for positive decimals only
     constraint GdpPerCapitaConstraint on decimal:
         value >= 0;
         
+    
     valuetype BondIssuanceShareType oftype decimal {
         constraints: [ BondIssuanceShareConstraint ];
         
-        }
+    }
 
-  // Define regex constraint with required regex pattern to extract text from  stadtteil starting with Vogelsang 
+    // Define constraint block for values 0-1 (inclusive)
     constraint BondIssuanceShareConstraint oftype RangeConstraint {
         lowerBound: 0;
         lowerBoundInclusive: true;
         upperBound: 1;
         upperBoundInclusive: true;
-}
+    }
 
 
+    // Now, we load the table into a sink,
+    // here into a sqlite file.
+    // The structural information of the table is used
+    // to generate the correct table.
 
-//  block ISO3ToCountrCodeTransformer oftype TableTransformer {
-//    inputColumns: "ISO3";
-//    outputColumn: 'Country Code';
-//    uses: ISO3ToCountryCode;
-//  }
-
-//  transform ISO3ToCountryCode {   
-//     from ISO3 oftype CountryCodeAlpha3;
-//    to "Country Code" oftype CountryCodeAlpha3;
-//    "Country Code": ISO3 
-//  }
- 
-
-
-  // Now, we load the table into a sink,
-  // here into a sqlite file.
-  // The structural information of the table is used
-  // to generate the correct table.
-
-  block BondLoader oftype SQLiteLoader {
+    block BondLoader oftype SQLiteLoader {
     table: "bondIssuance";
     file: "./country-stats.sqlite";
-  }
-  block GdpLoader oftype SQLiteLoader {
+    }
+    block GdpLoader oftype SQLiteLoader {
     table: "gdpPerCapita";
     file: "./country-stats.sqlite";
-  }
-
-
-  // Define permitive type for id and stadtteil on text with regex constraints
-//   valuetype GeoCoordinates oftype text {
-//     constraints: [ GeoCoordinatesRegex ];
-//     }
-    
-//   valuetype StadtVogelsang oftype text {
-//     constraints: [ StartsWithVogelsang ];
-    
-//     }
-
-//   // Define regex constraint with required regex pattern to extract text from  stadtteil starting with Vogelsang 
-//   constraint StartsWithVogelsang oftype RegexConstraint {
-//     regex: /^Vogelsang/;
-//   }
-
-//   // Define regex constraint with required regex pattern to extract geo coordinates from  id with format: {geo-coordinate 1}, {geo-coordinate 2}
-//   //a geo-coordinate is defined as {1-3 numbers}.{numbers}
- 
-//   constraint GeoCoordinatesRegex oftype RegexConstraint {
-//     regex: /^\d{1,3}\.\d+,\s?\d{1,3}\.\d+$/;
-//   }
+    }
 
 }
