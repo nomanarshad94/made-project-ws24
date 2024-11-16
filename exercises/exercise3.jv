@@ -45,7 +45,7 @@ pipeline CountryStatsPipeline {
     }
 
     block CountryStatsDataSelector oftype CellRangeSelector {
-    select: range P2:S45;
+    select: range P3:S45;
     }
 
     block BondIssuanceColumnSelector oftype ColumnDeleter {
@@ -59,7 +59,7 @@ pipeline CountryStatsPipeline {
   // We define a value type per column that specifies the data type of the column.
   // Rows that include values that are not valid according to the their value types are dropped automatically. 
     block BondIssuanceTableInterpreter oftype TableInterpreter {
-    header: true;
+    header: false;
     columns: [
         "Country Code" oftype CountryCodeAlpha3,
         "Bond Issuance Share" oftype BondIssuanceShareType
@@ -73,7 +73,7 @@ pipeline CountryStatsPipeline {
   
 
     block GdpPerCapitaTableInterpreter oftype TableInterpreter {
-    header: true;
+    header: false;
     columns: [
         "Country Code" oftype CountryCodeAlpha3,
         "GDP per Capita" oftype GdpPerCapitaType,
@@ -83,7 +83,7 @@ pipeline CountryStatsPipeline {
 
 
     valuetype GdpPerCapitaType oftype decimal {
-        constraints: [ BondIssuanceShareConstraint ];
+        constraints: [ GdpPerCapitaConstraint ];
         
         }
 
