@@ -8,7 +8,7 @@ Investigating the Relationship Between Startup Density and Household Income in U
 ## Main Question
 
 <!-- Think about one main question you want to answer based on the data. -->
-Can an increase in startup density causes higher average household income in metropolitan area? 
+Can an increase in number of startup cause higher average household income in a metropolitan area?
 <!-- 2. What is the impact of educational attainment on financial activity in metropolitan area? -->
 
 ## Description
@@ -30,34 +30,45 @@ The project aims to provide insights into the impact of startup ecosystems on ho
 
 The dataset include investments series at a company level with locations. 
 
+
 ### Datasource2: 
+* Metadata URL: [United States Household Income](https://www.kaggle.com/datasets/claygendron/us-household-income-by-zip-code-2021-2011)
+* Data URL: [United States Household Income data](https://www.kaggle.com/datasets/claygendron/us-household-income-by-zip-code-2021-2011?select=us_income_zipcode.csv)
+* Data Type: CSV
+
+The dataset icludes average household income within metropolitan area. It also includes bins of income and number of households lies within range of the bin per area. 
+
+
+### Datasource3: 
+* Metadata URL: [Unicorn Startups](https://www.kaggle.com/datasets/ramjasmaurya/unicorn-startups)
+* Data URL: [Unicorn Startups data with funding rounds](https://www.kaggle.com/datasets/ramjasmaurya/unicorn-startups?select=unicorns+till+sep+2022.csv)
+* Data Type: CSV
+
+"Unicorn" is a term used in the venture capital industry to describe a privately held startup company with a value of over $1 billion. The term was first popularized by venture capitalist Aileen Lee, founder of Cowboy Ventures, a seed-stage venture capital fund based in Palo Alto, California.
+This dataset contains data about Unicorns, their funding, data of founded etc.
+
+
+### Datasource4: 
 * Metadata URL: [United States Cities data source](https://simplemaps.com/data/us-cities)
 * Data URL: [United States Cities data](https://www.kaggle.com/datasets/sergejnuss/united-states-cities-database)
 * Data Type: CSV
 
 The dataset includes list of zip codes mapped to cities/states of United States with longitudes and latitudes. It also includes some population related statistics like population density and total population of an area.
 
-### Datasource3: 
-* Metadata URL: [United States Household Income](https://www.kaggle.com/datasets/claygendron/us-household-income-by-zip-code-2021-2011)
-* Data URL: [United States Household Income data](https://www.kaggle.com/datasets/claygendron/us-household-income-by-zip-code-2021-2011)
-* Data Type: CSV
-
-The dataset icludes average household income within metropolitan area. It also includes bins of income and number of households lies within range of the bin per area. 
-
-### Datasource4: 
-* Metadata URL: [United States Household Income](https://www.kaggle.com/datasets/ramjasmaurya/unicorn-startups)
-* Data URL: [United States Household Income data](https://www.kaggle.com/datasets/ramjasmaurya/unicorn-startups)
-* Data Type: CSV
-
-"Unicorn" is a term used in the venture capital industry to describe a privately held startup company with a value of over $1 billion. The term was first popularized by venture capitalist Aileen Lee, founder of Cowboy Ventures, a seed-stage venture capital fund based in Palo Alto, California.
-This dataset contains data about Unicorns, their funding, data of founded etc.
 
 ### Datasource5: 
+* Metadata URL: [US Startup companies over time](https://www.kaggle.com/datasets/axeltorbenson/us-cities-by-population-top-330)
+* Data URL: [US Startup companies over time data](https://www.kaggle.com/datasets/axeltorbenson/us-cities-by-population-top-330?select=us_cities_by_pop.csv)
+* Data Type: CSV
+
+The dataset contains statistics at city level for United States. This provides informative columns like land area in KM^2 and Miles^2. It can be used for calculating higher level stats like state levelm population density etc.
+
+<!-- ### Datasource5: 
 * Metadata URL: [US Startup companies over time](https://www.kaggle.com/datasets/thedevastator/empowering-the-next-wave-of-entrepreneurs/data?select=company.csv)
 * Data URL: [US Startup companies over time data](https://www.kaggle.com/datasets/thedevastator/empowering-the-next-wave-of-entrepreneurs/data?select=company.csv)
 * Data Type: CSV
 
-The dataset contains information on startup companies in the US from 2008, including company name, location, team size, number of founders, and other relevant information. This data can be used to empower the next wave of entrepreneurs by providing insights on what types of startups are being founded, where they are located, and how large their teams are.
+The dataset contains information on startup companies in the US from 2008, including company name, location, team size, number of founders, and other relevant information. This data can be used to empower the next wave of entrepreneurs by providing insights on what types of startups are being founded, where they are located, and how large their teams are. -->
 
 <!-- ### Datasource2: 
 * Metadata URL: [America population distribution](https://sedac.ciesin.columbia.edu/data/set/grump-v1-national-identifier-grid/)

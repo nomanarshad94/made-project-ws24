@@ -4,3 +4,6 @@
 .idea
 *.sqlite
 *-checkpoint.ipynb
+project/~$ta-report.docx
+project/census_variable_mappings.csv
+project/data-report.docx
