@@ -207,7 +207,7 @@ class ETLPipeline:
     def create_directory_if_not_exist(self,directory_path:str):
         """Create directory if not exists"""
         output_dir = Path(directory_path)
-        output_dir.mkdir(parents=True, exist_ok=False)
+        output_dir.mkdir(parents=True, exist_ok=True)
         return True
         
     
@@ -231,7 +231,7 @@ class ETLPipeline:
             logging.info("Data merged successfully.")
             logging.info("All transformations completed.")
             transformed_data_destination = os.path.join(os.path.split(os.getcwd())[0], "data")
-#             self.create_directory_if_not_exist(transformed_data_destination)
+            self.create_directory_if_not_exist(transformed_data_destination)
             self.loader.save_to_csv(merged_df, transformed_data_destination)
             if del_tmp_files:
                 self.extractor.cleanup_files()
@@ -244,4 +244,4 @@ class ETLPipeline:
 
 if __name__ == "__main__":
     pipeline = ETLPipeline()
-    pipeline.run(del_tmp_files=False, force_download=False)
+    pipeline.run(del_tmp_files=True, force_download=False)
