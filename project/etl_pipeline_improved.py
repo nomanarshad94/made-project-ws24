@@ -1,13 +1,13 @@
 import pandas as pd
+from kaggle.api.kaggle_api_extended import KaggleApi
 import os
 import logging
 from typing import List, Tuple
-from pathlib import Path
 from retry import retry
-from kaggle.api.kaggle_api_extended import KaggleApi
-import math
-import argparse
 import warnings
+import math
+from pathlib import Path
+
 warnings.filterwarnings("ignore")
 
 # Configure logging
@@ -99,15 +99,23 @@ class DataTransformer:
     @staticmethod
     def transform_vc_data(df: pd.DataFrame) -> pd.DataFrame:
         """Clean and reduce VC dataset."""
-        columns_to_drop = [
-            'permalink', 'homepage_url', 'first_funding_at', 'last_funding_at', 'seed', 'venture',
-            'equity_crowdfunding', 'undisclosed', 'convertible_note', 'debt_financing', 'angel',
-            'grant', 'private_equity', 'post_ipo_equity', 'post_ipo_debt', 'secondary_market',
-            'product_crowdfunding', 'round_A', 'round_B', 'round_C', 'round_D', 'round_E',
-            'round_F', 'round_G', 'round_H'
-        ]
-        df.rename(columns={' market ': "market", ' funding_total_usd ': "funding_total_usd"}, inplace=True)
-        return df.drop(columns=columns_to_drop)
+#         columns_to_drop = [
+#             'permalink', 'homepage_url', 'first_funding_at', 'last_funding_at', 'seed', 'venture',
+#             'equity_crowdfunding', 'undisclosed', 'convertible_note', 'debt_financing', 'angel',
+#             'grant', 'private_equity', 'post_ipo_equity', 'post_ipo_debt', 'secondary_market',
+#             'product_crowdfunding', 'round_A', 'round_B', 'round_C', 'round_D', 'round_E',
+#             'round_F', 'round_G', 'round_H','status','founded_at']
+        df.rename(columns={"name":"Company",' market ': "Industry", ' funding_total_usd ': "funding_total_usd"}, inplace=True)
+        df = df[df['status']!="closed"]
+        df = df[df['country_code']=="USA"]
+        df['funding_total_usd']=df.funding_total_usd.str.strip().str.strip().str.replace(',', '').str.replace('-', '0').astype(float)   
+        df = df[df['funding_total_usd']>0]
+        df['Valuation ($B)'] = (df['grant']+ df['seed']+df['venture']+df['funding_total_usd'])/1000000000 ## for Billion conversion
+        df['joined_date'] = pd.to_datetime(df.founded_at,errors="coerce")
+        columns_to_keep = ['Company', 'Valuation ($B)','Country','city','Industry','joined_date']
+        df['Country'] = "United States"
+        df = df[columns_to_keep]
+        return df #df.drop(columns=columns_to_drop)
 
 
     @staticmethod
@@ -162,13 +170,14 @@ class DataTransformer:
 
     
     @staticmethod
-    def merge_data(df_hhi, df_ucs, df_us_cities,df_us_area) -> pd.DataFrame:
+    def merge_data(df_vc,df_hhi, df_ucs, df_us_cities,df_us_area) -> pd.DataFrame:
         """Merge transformed datasets into a single DataFrame."""
-        df_ucs_us_cities = pd.merge(df_ucs, df_us_cities, on='city', how='inner').explode('zips').rename(columns={'zips': 'zip_code'})
+        df_vc_ucs_concat = pd.concat([df_vc, df_ucs], ignore_index=True, sort=False)
+        df_ucs_us_cities = pd.merge(df_vc_ucs_concat, df_us_cities, on='city', how='inner').explode('zips').rename(columns={'zips': 'zip_code'})
         transformed_df = df_hhi.merge(df_ucs_us_cities, on='zip_code', how='inner')
         merged_df = transformed_df.merge(df_us_area, on='city', how='inner')
 
-        return merged_df.groupby("Company").first().reset_index()
+        return merged_df#.groupby("Company").first().reset_index()
 
 
 class DataLoader:
@@ -218,7 +227,7 @@ class ETLPipeline:
             df_us_area = self.transformer.transform_area_data(dfs[4])
             logging.info("Transformation process on US land area and population  data completed.")
 
-            merged_df = self.transformer.merge_data(df_hhi, df_ucs, df_us_cities, df_us_area)
+            merged_df = self.transformer.merge_data(df_vc,df_hhi, df_ucs, df_us_cities, df_us_area)
             logging.info("Data merged successfully.")
             logging.info("All transformations completed.")
             transformed_data_destination = os.path.join(os.path.split(os.getcwd())[0], "data")
@@ -234,28 +243,5 @@ class ETLPipeline:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run the ETL pipeline with optional parameters.")
-    
-    # Adding command-line arguments
-    parser.add_argument(
-        "--del_tmp_files", 
-        action="store_true", 
-        help="Delete temporary files after ETL execution."
-    )
-    parser.add_argument(
-        "--force_download", 
-        action="store_true", 
-        help="Force downloading of datasets from Kaggle."
-    )
-    
-    args = parser.parse_args()
-    
-    # Extracting arguments
-    del_tmp_files = args.del_tmp_files
-    force_download = args.force_download
-    print("printing arguments values")
-    print(del_tmp_files,force_download)
-    # Running the ETL pipeline
     pipeline = ETLPipeline()
-    a=pipeline.run(del_tmp_files=del_tmp_files, force_download=force_download)
-
+    pipeline.run(del_tmp_files=False, force_download=False)
