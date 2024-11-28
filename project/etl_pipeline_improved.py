@@ -150,6 +150,7 @@ class DataTransformer:
         df['joined_date'] = pd.to_datetime(df['Date Joined'])
         df.rename(columns={df.columns[4]: "city"}, inplace=True)
         df.city = df.city.str.lower().str.replace(" ", "_")
+        df['Valuation ($B)'] = df['Valuation ($B)'].str.replace('$',"").astype(float)
         return df.drop(columns=["Investors", "Date Joined"])
 
     @staticmethod
@@ -244,4 +245,4 @@ class ETLPipeline:
 
 if __name__ == "__main__":
     pipeline = ETLPipeline()
-    pipeline.run(del_tmp_files=True, force_download=False)
+    pipeline.run(del_tmp_files=False, force_download=False)
