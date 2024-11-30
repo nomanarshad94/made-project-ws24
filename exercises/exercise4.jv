@@ -1,0 +1,139 @@
+// SPDX-FileCopyrightText: 2023 Friedrich-Alexander-Universitat Erlangen-Nurnberg
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
+// Exercise 4: Batery temperature measuments for android devices. 
+
+// This Jayvee model describes a pipeline 
+// from a zip file in the web 
+// to a SQLite file sink.
+pipeline BatteryTemperaturePipeline {
+
+  TemperatureZipExtractor
+    -> TemperatureZipArchiveInterpreter;
+
+  // The output of the preceding block is hereby used 
+  // as input for the succeeding block.
+
+  TemperatureZipArchiveInterpreter
+    -> TemperatureFilePicker
+    -> TemperatureFileInterpreter
+    -> TemperatureCSVInterpreter
+    -> CustomHeaderWriter
+    -> RenameBatterytemperatureHeader
+    -> TemperatureTableInterpreter
+    -> TemperatureTransformer
+    -> BateryTemperatureTransformer
+    -> temperatureLoader;
+
+
+    block TemperatureZipExtractor oftype HttpExtractor {
+
+        // Here, we specify the URL where the file shall be downloaded from.
+        url: "https://www.mowesta.com/data/measure/mowesta-dataset-20221107.zip";
+    }
+
+  // Next, we get the zip file to extract parent path.
+    block TemperatureZipArchiveInterpreter oftype ArchiveInterpreter {
+      archiveType: "zip";
+    }
+
+    block TemperatureFilePicker oftype FilePicker {
+      path: "./data.csv";
+    }
+
+    block TemperatureFileInterpreter oftype TextFileInterpreter{    }
+
+
+    block TemperatureCSVInterpreter oftype CSVInterpreter { 
+      delimiter: ";";
+    }
+
+     // Rename columns A-E headers
+    block CustomHeaderWriter oftype CellWriter {
+        at: range A1:E1;
+        write: ["id", "producer", "model", "month", "temperature"];
+    }
+
+    // Rename column J containing batery temperature
+    block RenameBatterytemperatureHeader oftype CellWriter {
+        at: cell J1;
+        write: ["battery_temperature"];
+    }
+
+  // As a next step, we interpret the sheet as a table by adding structure.
+  // We define a value type per column that specifies the data type of the column.
+  // Rows that include values that are not valid according to the their value types are dropped automatically. 
+    block TemperatureTableInterpreter oftype TableInterpreter {
+    header: true;
+    columns: [
+         "id" oftype IdType,
+         "producer" oftype text, 
+         "model" oftype text, 
+         "month" oftype MonthType, 
+         "temperature" oftype decimal,
+         "battery_temperature" oftype decimal
+        ];
+
+    }
+
+    transform CelsiusToFahrenheit {
+      from tempCelsius oftype decimal;
+      to tempFahrenheit oftype decimal;
+
+      tempFahrenheit: (tempCelsius * 9/5) +32;
+    }
+  
+    block TemperatureTransformer oftype TableTransformer {
+      inputColumns: ['temperature'];
+      outputColumn: 'temperature';
+      uses: CelsiusToFahrenheit;
+    }
+    
+    block BateryTemperatureTransformer oftype TableTransformer {
+      inputColumns: ['battery_temperature'];
+      outputColumn: 'battery_temperature';
+      uses: CelsiusToFahrenheit;
+    }
+    
+    
+    // Define constraint expression for id greater than 0
+    constraint ValidIdRange on integer:
+        value > 0;
+
+    valuetype IdType oftype integer {
+      constraints: [ ValidIdRange ];
+    } 
+
+    constraint MonthRange oftype RangeConstraint {
+        lowerBound: 1;
+        lowerBoundInclusive: true;
+        upperBound: 12;
+        upperBoundInclusive: true;
+    }
+
+    valuetype MonthType oftype integer {
+        constraints:[MonthRange];
+    }
+
+    // block GdpPerCapitaTableInterpreter oftype TableInterpreter {
+    // header: false;
+    // columns: [
+    //     "Country Code" oftype CountryCodeAlpha3,
+    //     "GDP per Capita" oftype GdpPerCapitaType,
+    //     ];
+
+    // }
+
+
+    // Now, we load the table into a sink,
+    // here into a sqlite file.
+    // The structural information of the table is used
+    // to generate the correct table.
+
+    block temperatureLoader oftype SQLiteLoader {
+    table: "temperatures";
+    file: "./temperatures.sqlite";
+    }
+
+}
