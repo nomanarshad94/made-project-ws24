@@ -9,3 +9,5 @@ project/census_variable_mappings.csv
 project/data-report.docx
 *.tmp
 project/data-report_copy.docx
+project/__pycache__/etl_pipeline_improved.cpython-37.pyc
+project/__pycache__/etl_pipeline.cpython-37.pyc
