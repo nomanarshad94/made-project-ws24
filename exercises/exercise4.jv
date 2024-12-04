@@ -67,13 +67,13 @@ pipeline BatteryTemperaturePipeline {
     block TemperatureTableInterpreter oftype TableInterpreter {
     header: true;
     columns: [
-         "id" oftype IdType,
-         "producer" oftype text, 
-         "model" oftype text, 
-         "month" oftype MonthType, 
-         "temperature" oftype decimal,
-         "battery_temperature" oftype decimal
-        ];
+        "id" oftype IdType,
+        "producer" oftype NonEmptyText, 
+        "model" oftype NonEmptyText, 
+        "month" oftype MonthType, 
+        "temperature" oftype decimal,
+        "battery_temperature" oftype decimal
+      ];
 
     }
 
@@ -116,21 +116,21 @@ pipeline BatteryTemperaturePipeline {
         constraints:[MonthRange];
     }
 
-    // block GdpPerCapitaTableInterpreter oftype TableInterpreter {
-    // header: false;
-    // columns: [
-    //     "Country Code" oftype CountryCodeAlpha3,
-    //     "GDP per Capita" oftype GdpPerCapitaType,
-    //     ];
+    valuetype NonEmptyText oftype text {
+      constraints: [
+        NonEmptyTextConstraint,
+      ];
+    }
 
-    // }
-
-
+    // This constraint works on text value types and requires values 
+    // to be non empty in order to be valid.
+    
+    constraint NonEmptyTextConstraint on text: value.length > 0;
+    
     // Now, we load the table into a sink,
     // here into a sqlite file.
     // The structural information of the table is used
     // to generate the correct table.
-
     block temperatureLoader oftype SQLiteLoader {
     table: "temperatures";
     file: "./temperatures.sqlite";
