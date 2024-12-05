@@ -13,5 +13,3 @@ else
     echo "Tests failed!"
     # exit 1 ## commented out to avoid closing terminal, to know read what went wrong
 fi
-
-
