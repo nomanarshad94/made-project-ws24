@@ -99,12 +99,6 @@ class DataTransformer:
     @staticmethod
     def transform_vc_data(df: pd.DataFrame) -> pd.DataFrame:
         """Clean and reduce VC dataset."""
-#         columns_to_drop = [
-#             'permalink', 'homepage_url', 'first_funding_at', 'last_funding_at', 'seed', 'venture',
-#             'equity_crowdfunding', 'undisclosed', 'convertible_note', 'debt_financing', 'angel',
-#             'grant', 'private_equity', 'post_ipo_equity', 'post_ipo_debt', 'secondary_market',
-#             'product_crowdfunding', 'round_A', 'round_B', 'round_C', 'round_D', 'round_E',
-#             'round_F', 'round_G', 'round_H','status','founded_at']
         df.rename(columns={"name":"Company",' market ': "Industry", ' funding_total_usd ': "funding_total_usd"}, inplace=True)
         df = df[df['status']!="closed"]
         df = df[df['country_code']=="USA"]
@@ -114,6 +108,7 @@ class DataTransformer:
         df['joined_date'] = pd.to_datetime(df.founded_at,errors="coerce")
         columns_to_keep = ['Company', 'Valuation ($B)','Country','city','Industry','joined_date']
         df['Country'] = "United States"
+        df['city'] = df['city'].str.lower().str.replace(" ", "_")
         df = df[columns_to_keep]
         return df #df.drop(columns=columns_to_drop)
 
@@ -241,6 +236,7 @@ class ETLPipeline:
         except Exception as e:
             logging.error(f"ETL process failed: {e}")
             raise
+
 
 
 if __name__ == "__main__":
