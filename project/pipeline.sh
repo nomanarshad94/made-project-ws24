@@ -12,3 +12,6 @@ py -3.7 -W ignore ../project/etl_pipeline_improved.py
 # ETL script support two arguments --del_tmp_files and --force_download. Use --del_tmp_files if you want to clean up temporary files script used after finishing. Use --force_download if you want to force download datasets even if it exists already due to previous run or so.
 # Absence of these arguments will run script with arguments set to: del_tmp_files=False, force_download=False.
 # Example usage: py -3.7 -W ignore ../project/etl_pipeline_improved.py --force_download
+
+# I am running this in git bash with command: ". ./pipeline.sh", and running it from project directory itself in which pipeline.sh file exist. 
+# So before running please change current directory to project folder of made project repo in terminal

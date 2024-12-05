@@ -65,3 +65,6 @@ read -p "Press Enter to exit..."
 # lastly I am using kaggle api for dataset. kaggle api requires kaggle.json with valid username and api key to fetch the data. Due to security
 # reasons I am not pushing api key and username to github repo. But to run the pipeline you have to have kaggle.json file in .kaggle folder under
 # your user directory (~/.kaggle/kaggle.json on Linux and C:\Users\<Windows-username>\.kaggle\kaggle.json on Windows)
+
+# I am running this in git bash with command: ". ./tests.sh", and running it from project directory itself in which tests.sh file exist. 
+# So before running please change current directory to project folder of made project repo 
