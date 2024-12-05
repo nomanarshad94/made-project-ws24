@@ -43,7 +43,7 @@ class TestETLPipelineIntegration(unittest.TestCase):
     
     def test_pipeline_system(self):
         """System-level test for the entire ETL pipeline."""
-        df = self.pipeline.run(del_tmp_files=False, force_download=False)
+        df = self.pipeline.run(del_tmp_files=True, force_download=False)
         self.assertTrue(self.final_output_path.exists(), "Final output file not found.")
         self.assertIsInstance(df, pd.DataFrame)
         self.assertGreater(len(df), 0, "Merged DataFrame is empty.")
