@@ -20,8 +20,8 @@ jobs:
         with:
           path: main
 
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "Initiating code testing for repository."
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
@@ -35,11 +35,11 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          pip install -r ../project/requirements.txt
+          pip install -r ./project/requirements.txt
 
       # Run grading feedback
       - name: Project Test
         id: project_test
         run: |
-          ../project/tests.sh
+          ./project/tests.sh
 
