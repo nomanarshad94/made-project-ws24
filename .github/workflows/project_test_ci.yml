@@ -1,5 +1,5 @@
 name: MADE Project Test Automation
-run-name: ${{ github.actor }} is running project unit and integration tests!
+run-name: Running project unit and integration tests! # ${{ github.actor }} 
 on:
   push:
     branches:
@@ -40,6 +40,7 @@ jobs:
           pip install -r requirements.txt
 
 
+      
 
       - run: echo "Executing tests.sh script to run test cases."
       - name: Project Test
