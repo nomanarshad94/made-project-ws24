@@ -41,7 +41,9 @@ jobs:
           pip install -r ./project/requirements.txt
 
 
-      
+      - run: echo "Setting execute permission on tests.sh file to run test cases."
+      - name: Set Execute Permission for tests.sh
+        run: chmod +x ./project/tests.sh
 
       - run: echo "Executing tests.sh script to run test cases."
       - name: Project Test
