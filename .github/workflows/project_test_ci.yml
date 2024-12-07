@@ -30,16 +30,14 @@ jobs:
 
       # Install python
       - run: echo "Installing Python3 in runner."
-      - name: Set up Python 3.11
+      - name: Set up Python 3.10
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: 3.10
 
       - run: echo "Installing Project dependencies with pip."
       - name: Install Dependencies
         run: |
-          ls ./project
-          pwd
           pip install -r ./project/requirements.txt
 
 
