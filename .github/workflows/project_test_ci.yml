@@ -38,9 +38,9 @@ jobs:
       - run: echo "Installing Project dependencies with pip."
       - name: Install Dependencies
         run: |
-          ls
+          ls ./project
           pwd
-          pip install -r requirements.txt
+          pip install -r ./project/requirements.txt
 
 
       
