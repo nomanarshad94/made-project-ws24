@@ -18,8 +18,8 @@ jobs:
       
       - name: Check out repository code
         uses: actions/checkout@v4
-        # with:
-        #   path: main
+        with:
+          path: main
 
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "Initiating code testing for repository."
@@ -38,7 +38,7 @@ jobs:
       - run: echo "Installing Project dependencies with pip."
       - name: Install Dependencies
         run: |
-          ls ./project
+          ls ${{ github.workspace }}/project
           pwd
           pip install -r ./project/requirements.txt
 
