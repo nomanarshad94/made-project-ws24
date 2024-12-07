@@ -37,7 +37,9 @@ jobs:
       - run: echo "Installing Project dependencies with pip."
       - name: Install Dependencies
         run: |
-          pip install -r ./project/requirements.txt
+          pip install -r requirements.txt
+
+
 
       - run: echo "Executing tests.sh script to run test cases."
       - name: Project Test
