@@ -9,7 +9,7 @@ on:
       - .github/workflows/project*
 
 jobs:
-  Pproject-Test-Run:
+  Project-Test-Run:
     runs-on: ubuntu-latest
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
@@ -39,9 +39,7 @@ jobs:
       - name: Install Dependencies
         run: |
           ls
-        run: |
           pwd
-        run: |
           pip install -r requirements.txt
 
 
