@@ -22,7 +22,7 @@
 echo "==============================="
 echo "  Running ETL Pipeline Tests   "
 echo "==============================="
-echo "ls" # TODO: delete after test
+ls # TODO: delete after test
 # setting required variables
 ALL_TESTS_PASSED=0
 # Define Python executable and test files
