@@ -1,0 +1,94 @@
+// SPDX-FileCopyrightText: 2023 Friedrich-Alexander-Universitat Erlangen-Nurnberg
+//
+// SPDX-License-Identifier: AGPL-3.0-only
+
+// Exercise 5: General Transit Feed Specification
+
+// This Jayvee model describes a pipeline 
+// from a zip file in the web 
+// to a SQLite file sink.
+pipeline GTFSPipeline {
+
+  GTFSZipExtractor
+    -> GTFSZipArchiveInterpreter;
+
+  // The output of the preceding block is hereby used 
+  // as input for the succeeding block.
+
+  GTFSZipArchiveInterpreter
+    -> GTFSFilePicker
+    -> GTFSFileInterpreter
+    -> GTFSCSVInterpreter
+    -> GTFSTableInterpreter
+    -> GTFSLoader;
+
+
+  block GTFSZipExtractor oftype HttpExtractor {
+
+      // Here, we specify the URL where the file shall be downloaded from.
+      url: "https://gtfs.rhoenenergie-bus.de/GTFS.zip";
+  }
+
+  // Next, we get the zip file to extract parent path.
+  block GTFSZipArchiveInterpreter oftype ArchiveInterpreter {
+    archiveType: "zip";
+  }
+
+  block GTFSFilePicker oftype FilePicker {
+    path: "./stops.txt";
+  }
+
+  block GTFSFileInterpreter oftype TextFileInterpreter{  
+    encoding: "utf8";
+
+    }
+
+
+  block GTFSCSVInterpreter oftype CSVInterpreter { 
+    delimiter: ",";
+    enclosing: '"';
+  }
+
+  // As a next step, we interpret the sheet as a table by adding structure.
+  // We define a value type per column that specifies the data type of the column.
+  // Rows that include values that are not valid according to the their value types are dropped automatically. 
+  block GTFSTableInterpreter oftype TableInterpreter {
+  header: true;
+  columns: [
+      "stop_id" oftype integer, 
+      "stop_name" oftype text, 
+      "stop_lat" oftype GeoCoordinatesType,
+      "stop_lon" oftype GeoCoordinatesType,
+      "zone_id" oftype ZoneIDType
+    ];
+
+  }
+    
+  
+  // Define constraint expression for zone id to filter zone having id: 1925
+  constraint ValidZoneId on integer:
+      value == 1925;
+
+  valuetype ZoneIDType oftype integer {
+    constraints: [ ValidZoneId ];
+  } 
+
+  constraint GeoCoordinatesRange oftype RangeConstraint {
+      lowerBound: -90;
+      lowerBoundInclusive: true;
+      upperBound: 90;
+      upperBoundInclusive: true;
+  }
+
+  valuetype GeoCoordinatesType oftype decimal {
+      constraints:[GeoCoordinatesRange];
+  }
+  
+  // Now, we load the table into a sink,
+  // here into a sqlite file.
+  block GTFSLoader oftype SQLiteLoader {
+  table: "stops";
+  file: "./gtfs.sqlite";
+  }
+
+}
