@@ -24,8 +24,7 @@ jobs:
       - run: echo "The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "Initiating code testing for repository."
       - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
+        run: ls ${{ github.workspace }}
       - run: echo " This job's status is ${{ job.status }}."
 
       # Install python
@@ -37,15 +36,8 @@ jobs:
 
       - run: echo "Installing Project dependencies with pip."
       - name: Install Dependencies
-        run: |
-          pip install -r ./project/requirements.txt
-
-      - run: echo "Creating alias for py (python3) ."
-      - name: Create Alias for py
-        run: echo "alias py='python3.7'" >> ~/.bashrc
-
-      - name: Source Bashrc
-        run: source ~/.bashrc
+        run: pip install -r ./project/requirements.txt
+        
 
       - run: echo "Setting execute permission on tests.sh file to run test cases."
       - name: Set Execute Permission for tests.sh
@@ -54,7 +46,6 @@ jobs:
       - run: echo "Executing tests.sh script to run test cases."
       - name: Project Test
         id: project_test
-        run: |
-          ./project/tests.sh
+        run: ./project/tests.sh
       - run: echo "Testing completed."
 

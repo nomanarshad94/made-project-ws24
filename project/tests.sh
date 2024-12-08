@@ -23,9 +23,11 @@ echo "==============================="
 echo "  Running ETL Pipeline Tests   "
 echo "==============================="
 
-# Define Python executable and test files
+# setting alias and required variables
 ALL_TESTS_PASSED=0
-PYTHON_EXEC="py -W ignore" # changing py -3.7 to py as py utility is only for windows not available in unix 
+alias py='python3'
+# Define Python executable and test files
+PYTHON_EXEC="py -W ignore" # changing py -3.7 to py as py utility is only for windows and not available in unix.
 UNIT_TESTS="../project/unit_tests.py"
 INTEGRATION_TESTS="../project/integration_tests.py"
 
