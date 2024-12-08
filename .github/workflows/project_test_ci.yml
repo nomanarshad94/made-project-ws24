@@ -42,12 +42,10 @@ jobs:
 
       - run: echo "Creating alias for py (python3) ."
       - name: Create Alias for py
-        run: echo "alias py='python3'" 
-        
-      #   >> ~/.bashrc
+        run: echo "alias py='python3.7'" >> ~/.bashrc
 
-      # - name: Source Bashrc
-      #   run: source ~/.bashrc
+      - name: Source Bashrc
+        run: source ~/.bashrc
 
       - run: echo "Setting execute permission on tests.sh file to run test cases."
       - name: Set Execute Permission for tests.sh

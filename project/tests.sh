@@ -24,6 +24,7 @@ echo "  Running ETL Pipeline Tests   "
 echo "==============================="
 
 # Define Python executable and test files
+ALL_TESTS_PASSED=0
 PYTHON_EXEC="py -W ignore" # changing py -3.7 to py as py utility is only for windows not available in unix 
 UNIT_TESTS="../project/unit_tests.py"
 INTEGRATION_TESTS="../project/integration_tests.py"
@@ -40,6 +41,7 @@ run_test() {
         echo "Stopping script execution due to a test failure."
         # exit 1 # comment out to avoid closing terminal, to know read what went wrong
     else
+        ALL_TESTS_PASSED=1
         echo "✅ Test passed: $test_script"
     fi
 }
@@ -50,12 +52,22 @@ run_test "$UNIT_TESTS"
 # Run Integration Tests
 run_test "$INTEGRATION_TESTS"
 
-echo "=================================="
-echo "  All tests passed successfully!  "
-echo "=================================="
 
-# Keep terminal open to review results
-read -p "Press Enter to exit..."
+# Check the exit status of all tests
+if [ $ALL_TESTS_PASSED -eq 1 ]; then
+    echo "=================================="
+    echo "  All tests passed successfully!  "
+    echo "=================================="
+    # exit 0  ## Uncomment if you want to exit with success
+else
+    echo "=================================="
+    echo "  Some test(s) failed to pass!    "
+    echo "=================================="
+    # exit 1  ## Uncomment if you want to exit with failure
+fi
+
+# # Keep terminal open to review results
+# read -p "Press Enter to exit..."
 
 
 # As I have multiple python environments so only environement with python 3.7 contains required packages of python for this project.
