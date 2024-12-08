@@ -34,6 +34,12 @@ jobs:
         with:
           python-version: "3.7"
 
+      - run: echo "Setting up kaggle api credentials to pull data from kaggle"
+      - name: Environment variable setup
+        env:
+          KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
+          KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+
       - run: echo "Installing Project dependencies with pip."
       - name: Install Dependencies
         run: pip install -r ./project/requirements.txt
@@ -45,8 +51,6 @@ jobs:
       - run: echo "Executing tests.sh script to run test cases."
       - name: Project Test
         id: project_test
-        run: |
-          ls
-          ./tests.sh
+        run: ./tests.sh
         working-directory: ./project
       - run: echo "Testing completed."
