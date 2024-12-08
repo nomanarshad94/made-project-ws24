@@ -45,7 +45,5 @@ jobs:
       - run: echo "Executing tests.sh script to run test cases."
       - name: Project Test
         id: project_test
-        run: |
-            cd ..
-            ./project/tests.sh
+        run: ./project/tests.sh
       - run: echo "Testing completed."
