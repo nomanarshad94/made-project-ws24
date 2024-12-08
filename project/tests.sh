@@ -22,7 +22,7 @@
 echo "==============================="
 echo "  Running ETL Pipeline Tests   "
 echo "==============================="
-
+echo "ls" # TODO: delete after test
 # setting required variables
 ALL_TESTS_PASSED=0
 # Define Python executable and test files
@@ -40,7 +40,6 @@ run_test() {
     if [ $? -ne 0 ]; then
         echo "❌ Test failed: $test_script"
         echo "Stopping script execution due to a test failure."
-        # exit 1 # comment out to avoid closing terminal, to know read what went wrong
     else
         ALL_TESTS_PASSED=1
         echo "✅ Test passed: $test_script"
@@ -59,12 +58,12 @@ if [ $ALL_TESTS_PASSED -eq 1 ]; then
     echo "=================================="
     echo "  All tests passed successfully!  "
     echo "=================================="
-    # exit 0  ## Uncomment if you want to exit with success
+    exit 0  ## Uncomment if you want to exit with success
 else
     echo "=================================="
     echo "  Some test(s) failed to pass!    "
     echo "=================================="
-    # exit 1  ## Uncomment if you want to exit with failure
+    exit 1  ## Uncomment if you want to exit with failure
 fi
 
 # # Keep terminal open to review results
