@@ -36,6 +36,7 @@ jobs:
 
       - run: echo "Setting up kaggle api credentials to pull data from kaggle"
       - name: Environment variable setup
+        run: echo "Kaggle credentials have been set."
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
