@@ -24,7 +24,7 @@ echo "  Running ETL Pipeline Tests   "
 echo "==============================="
 
 # Define Python executable and test files
-PYTHON_EXEC="py -3.7 -W ignore"
+PYTHON_EXEC="py -W ignore" # changing py -3.7 to py as py utility is only for windows not available in unix 
 UNIT_TESTS="../project/unit_tests.py"
 INTEGRATION_TESTS="../project/integration_tests.py"
 
