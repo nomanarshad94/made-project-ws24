@@ -40,9 +40,11 @@ jobs:
         run: |
           pip install -r ./project/requirements.txt
 
+
+
       - run: echo "Creating alias for py (python3) ."
       - name: Create Alias for py
-        run: echo "alias py='python3.7'" >> ~/.bashrc
+        run: echo "alias py='python3'" >> ~/.bashrc
 
       - name: Source Bashrc
         run: source ~/.bashrc
