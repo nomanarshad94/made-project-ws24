@@ -43,17 +43,12 @@ jobs:
 
       - run: echo "Installing python launcher to mimic py -3.7 in ubuntu."
       - name: Install python launcher
-        run: sudo apt-get -y install python-launcher
+        # run: sudo apt-get -y install python-launcher
+        run: |
+            curl --location --remote-name https://github.com/brettcannon/python-launcher/releases/download/v1.0.1/python_launcher-1.0.1-x86_64-unknown-linux-gnu.tar.xz
+            tar --extract --strip-components 1 --directory /usr/local --file python_launcher-1.0.1-x86_64-unknown-linux-gnu.tar.xz
 
-      
-
-      # - run: echo "Creating alias for py (python3) ."
-      # - name: Create Alias for py
-      #   run: echo "alias py='python3.7'" >> ~/.bashrc
-
-      # - name: Source Bashrc
-      #   run: source ~/.bashrc
-
+        
       - run: echo "Setting execute permission on tests.sh file to run test cases."
       - name: Set Execute Permission for tests.sh
         run: chmod +x ./project/tests.sh
