@@ -50,7 +50,7 @@ run_test() {
 run_test "$UNIT_TESTS"
 
 # Run Integration Tests
-# run_test "$INTEGRATION_TESTS"
+run_test "$INTEGRATION_TESTS"
 
 
 # Check the exit status of all tests
