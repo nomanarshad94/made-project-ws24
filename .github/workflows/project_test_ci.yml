@@ -46,6 +46,7 @@ jobs:
       - name: Project Test
         id: project_test
         run: |
-          ./project/tests.sh
+          ls
+          ./tests.sh
         working-directory: ./project
       - run: echo "Testing completed."
