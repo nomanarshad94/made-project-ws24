@@ -29,10 +29,10 @@ jobs:
 
       # Install python
       - run: echo "Installing Python3 in runner."
-      - name: Set up Python 3.7
+      - name: Set up Python 3.7.6
         uses: actions/setup-python@v5
         with:
-          python-version: "3.7"
+          python-version: "3.7.6"
 
       - run: echo "Setting up kaggle api credentials to pull data from kaggle"
       - name: Set up Kaggle credentials
