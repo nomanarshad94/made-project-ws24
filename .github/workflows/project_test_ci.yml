@@ -10,7 +10,7 @@ on:
 
 jobs:
   Project-Test-Run:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - run: echo "The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -29,10 +29,10 @@ jobs:
 
       # Install python
       - run: echo "Installing Python3 in runner."
-      - name: Set up Python 3.7.6
+      - name: Set up Python 3.7
         uses: actions/setup-python@v5
         with:
-          python-version: "3.7.6"
+          python-version: "3.7"
 
       - run: echo "Setting up kaggle api credentials to pull data from kaggle"
       - name: Set up Kaggle credentials
