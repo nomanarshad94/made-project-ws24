@@ -33,7 +33,7 @@ class TestETLPipelineIntegration(unittest.TestCase):
         df = pd.read_csv(self.final_output_path)
         required_columns = [
             'city', 'Households', 'Households Mean Income', 'Households Median Income',
-            'Valuation ($B)', 'state_name', 'zip_code', 'Company', 'Industry', 'state_id',
+            'Valuation ($B)', 'state_name','county_name', 'zip_code', 'Company', 'Industry', 'state_id',
             'county_name', 'population', 'density', 'land_area_km'
         ]
         for col in required_columns:

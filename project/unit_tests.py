@@ -218,6 +218,7 @@ class TestETLPipelineUnit(unittest.TestCase):
         df_us_cities = pd.DataFrame({
             'city': ['new_york'],
             'state_name': ['new_york'],
+            'county_name': ['new_york'],
             'population': [8000000],
             'zips': [['10001', '10002']]
         })
