@@ -371,7 +371,8 @@ class DataTransformer:
                               "Households Mean Income (Dollars)":"Households Mean Income"},inplace=True)
             income_columns = ["Households Median Income", "Households Mean Income"]
             income_columns_new = [i+'_'+str(j) for i in income_columns for j in years]
-            columns_to_keep = ["zip_code"] + household_columns + percentage_columns_new + income_columns_new 
+            columns_to_keep = ["zip_code"] + ["Households"] + percentage_columns + income_columns
+            columns_to_keep_pivot = ["zip_code"] + household_columns + percentage_columns_new + income_columns_new 
             drop_column_subset = [x for x in columns_to_keep if x not in percentage_columns]
             df.drop(columns=columns_to_drop, inplace=True)
             # df = df[df['Year']==2021] # keeping only last years data
@@ -387,7 +388,7 @@ class DataTransformer:
 
             # Reset index to make city a column
             pivot_df.reset_index(inplace=True)
-            return pivot_df[columns_to_keep] 
+            return pivot_df[columns_to_keep_pivot] 
     
     
     @staticmethod
