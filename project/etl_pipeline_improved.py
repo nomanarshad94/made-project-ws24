@@ -387,7 +387,7 @@ class DataTransformer:
 
             # Reset index to make city a column
             pivot_df.reset_index(inplace=True)
-            return df[columns_to_keep] 
+            return pivot_df[columns_to_keep] 
     
     
     @staticmethod
