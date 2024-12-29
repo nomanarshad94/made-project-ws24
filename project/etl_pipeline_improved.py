@@ -123,7 +123,8 @@ class DataTransformer:
                                 'Households $35,000 to $49,999', 'Households $50,000 to $74,999',
                                 'Households $75,000 to $99,999', 'Households $100,000 to $149,999',
                                 'Households $150,000 to $199,999', 'Households $200,000 or More']
-            years = [2018, 2019, 2020, 2021]
+            # years = [2018, 2019, 2020, 2021]
+            years = list(df[df['Year']>=2018].Year.unique())
             household_columns = ["Households_"+str(i) for i in years]
             percentage_columns_new=[]
             for i in percentage_columns:

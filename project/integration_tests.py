@@ -32,7 +32,7 @@ class TestETLPipelineIntegration(unittest.TestCase):
         """Test if the output DataFrame has valid columns and no duplicates."""
         df = pd.read_csv(self.final_output_path)
         required_columns = [
-            'city', 'Households', 'Households Mean Income', 'Households Median Income',
+            'city', 'Households_2021', 'Households Mean Income_2021', 'Households Median Income_2021',
             'Valuation ($B)', 'state_name','county_name', 'zip_code', 'Company', 'Industry', 'state_id',
             'county_name', 'population', 'density', 'land_area_km'
         ]
@@ -48,7 +48,7 @@ class TestETLPipelineIntegration(unittest.TestCase):
         self.assertIsInstance(df, pd.DataFrame)
         self.assertGreater(len(df), 0, "Merged DataFrame is empty.")
         required_columns = ['Company', 'Valuation ($B)', 'Country', 'city', 
-                          'Households Median Income', 'Households Mean Income','land_area_km',"lat",
+                          'Households Median Income_2021', 'Households Mean Income_2021','land_area_km',"lat",
                             'lng','population','density','state']
         for col in required_columns:
             self.assertIn(col, df.columns)
