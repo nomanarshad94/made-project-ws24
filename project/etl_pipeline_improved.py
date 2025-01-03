@@ -111,6 +111,8 @@ class DataTransformer:
         df['Country'] = "United States"
         df['city'] = df['city'].str.lower().str.replace(" ", "_")
         df = df[columns_to_keep]
+        df = DataTransformer.fill_nan_with_mode(df,'joined_date')
+        df = DataTransformer.fill_nan_with_mode(df,'Industry')
         return df #df.drop(columns=columns_to_drop)
 
 
@@ -162,6 +164,8 @@ class DataTransformer:
         df.rename(columns={df.columns[4]: "city"}, inplace=True)
         df.city = df.city.str.lower().str.replace(" ", "_")
         df['Valuation ($B)'] = df['Valuation ($B)'].str.replace('$',"").astype(float)
+        df = DataTransformer.fill_nan_with_mode(df,'joined_date')
+        df = DataTransformer.fill_nan_with_mode(df,'Industry')
         return df.drop(columns=["Investors", "Date Joined"])
 
     @staticmethod
@@ -182,16 +186,68 @@ class DataTransformer:
 
     
     @staticmethod
-    def merge_data(df_vc,df_hhi, df_ucs, df_us_cities,df_us_area) -> pd.DataFrame:
+    def get_companies_cgrowth_data_timeseries(df: pd.DataFrame) -> pd.DataFrame:
+        """Transform US cities land area stats dataset."""
+        df.state = df.state.str.lower().str.replace(" ", "_")
+        df.city = df.city.str.lower().str.replace(" ", "_")
+        return df[['city', 'state', 'land_area_km']]
+    
+    
+    @staticmethod
+    def get_companies_growth_data_timeseries(df_vc: pd.DataFrame,df_ucs: pd.DataFrame) -> pd.DataFrame:
+        """Transform companies dataset and return dataframe with company count over years."""
+        df_vc_ucs_concat = pd.concat([df_vc, df_ucs], ignore_index=True, sort=False)
+        df_vc_ucs_concat['year'] = df_vc_ucs_concat.joined_date.dt.year.astype(int)
+        #cap year range to 2017-2021
+        min_year = 2017
+        max_year = 2021
+        df_vc_ucs_concat['year'] = df_vc_ucs_concat['year'].apply(lambda x: max(x,min_year))
+        df_vc_ucs_concat['year'] = df_vc_ucs_concat['year'].apply(lambda x: min(x,max_year))
+        # Calculate cumulative counts by city and year
+        city_cumulative = df_vc_ucs_concat.groupby(['city', 'year'])['Company'].count().groupby(level=0).cumsum().reset_index()
+
+        # Rename column for clarity before merging
+        city_cumulative.rename(columns={'Company': 'company_count','year':'company_year'}, inplace=True)
+        city_cumulative_filtered = city_cumulative[(city_cumulative['company_year'] >= min_year) & (city_cumulative['company_year'] <= max_year)]
+        city_cumulative_filtered.reset_index(drop=True,inplace=True)
+        pivot_df_city = city_cumulative_filtered.pivot(index='city', columns='company_year', values='company_count')
+
+        # Resetting the index to make the city a column
+        pivot_df_city.rename(columns={2017:"companies_2017",2018:"companies_2018",2019:"companies_2019",2020:"companies_2020",2021:"companies_2021"},inplace=True)
+        pivot_df_city.reset_index(inplace=True)
+        return pivot_df_city
+    
+    
+    @staticmethod
+    def merge_data(df_vc,df_hhi, df_ucs, df_us_cities,df_us_area,company_growth_df) -> pd.DataFrame:
         """Merge transformed datasets into a single DataFrame."""
         df_vc_ucs_concat = pd.concat([df_vc, df_ucs], ignore_index=True, sort=False)
+
         df_ucs_us_cities = pd.merge(df_vc_ucs_concat, df_us_cities, on='city', how='inner').explode('zips').rename(columns={'zips': 'zip_code'})
         transformed_df = df_hhi.merge(df_ucs_us_cities, on='zip_code', how='inner')
         merged_df = transformed_df.merge(df_us_area, on='city', how='inner')
-
-        return merged_df.groupby(["Company","state_name","county_name","city"]).first().reset_index()
+        company_transformed_merged_df = merged_df.merge(company_growth_df,how='inner',on='city')
+        
+        object_columns = [i[0] for i in zip(transformed_df.columns,transformed_df.dtypes) if i[1]=='object']
+        company_transformed_merged_df[object_columns] = company_transformed_merged_df[object_columns].apply(lambda x: x.str.strip())
+        
+        return company_transformed_merged_df.groupby(["Company","state_name","county_name","city"]).first().reset_index()
     
-
+    
+    @staticmethod
+    def get_mode_value_for_series(df,series_name):
+        """Function to find mode for dataframe (df) and column (series_name)"""
+        mode = df[series_name].mode().iat[0]
+        return mode
+    
+    @staticmethod
+    def fill_nan_with_mode(df, series_name) -> pd.DataFrame:
+        """Function to fill empty values with mode for dataframe (df) and column (series_name)"""
+        mode_value = DataTransformer.get_mode_value_for_series(df, series_name)
+        df[series_name] = df[series_name].fillna(mode_value)
+        return df
+    
+    
 
 class DataLoader:
     """Saves transformed data to a destination."""
@@ -239,8 +295,9 @@ class ETLPipeline:
             logging.info("Transformation process on US cities data completed.")
             df_us_area = self.transformer.transform_area_data(dfs[4])
             logging.info("Transformation process on US land area and population  data completed.")
-
-            merged_df = self.transformer.merge_data(df_vc,df_hhi, df_ucs, df_us_cities, df_us_area)
+            company_growth_df = self.transformer.get_companies_growth_data_timeseries(df_vc, df_ucs)
+            logging.info("Companies growth data transformation completed.")
+            merged_df = self.transformer.merge_data(df_vc,df_hhi, df_ucs, df_us_cities, df_us_area,company_growth_df)
             logging.info("Data merged successfully.")
             logging.info("All transformations completed.")
             transformed_data_destination = os.path.join(os.path.split(os.getcwd())[0], "data")
