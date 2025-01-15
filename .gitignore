@@ -12,3 +12,6 @@ project/data-report_copy.docx
 *.pyc
 *.pyc
 project/*.csv
+visuals/
+project/analysis-report.docx
+
