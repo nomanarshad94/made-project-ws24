@@ -1,4 +1,10 @@
+
+## Current Workflow Status
+![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+
+
 # Investigating the Relationship Between Startup Density and Household Income in U.S. Metropolitan Areas
+![alt text](/project_main_image.avif?raw=true)
 
 ## Overview
 
