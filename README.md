@@ -4,7 +4,11 @@
 
 
 # Investigating the Relationship Between Startup Density and Household Income in U.S. Metropolitan Areas
-![alt text](/project_main_image.avif?raw=true)
+<!-- ![alt text](/project_main_image.avif?raw=true) -->
+
+<p align="center">
+  <img src="/project_main_image.avif" title="hover text">
+</p>
 
 ## Overview
 
