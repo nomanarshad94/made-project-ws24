@@ -1,6 +1,6 @@
 
 ## Current Workflow Status
-![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![MADE Project Test Automation](https://github.com/nomanarshad94/made-project-ws24/actions/workflows/project_test_ci.yml/badge.svg)](https://github.com/nomanarshad94/made-project-ws24/actions/workflows/project_test_ci.yml)
 
 
 # Investigating the Relationship Between Startup Density and Household Income in U.S. Metropolitan Areas
