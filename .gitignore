@@ -4,7 +4,7 @@
 .idea
 *.sqlite
 *-checkpoint.ipynb
-project/~$ta-report.docx
+project/*.docx
 project/census_variable_mappings.csv
 project/data-report.docx
 *.tmp
@@ -12,6 +12,6 @@ project/data-report_copy.docx
 *.pyc
 *.pyc
 project/*.csv
-visuals/
-project/analysis-report.docx
+project/visuals/*/*.csv
+
 
