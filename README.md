@@ -74,7 +74,7 @@ The analysis will utilize five key datasets:
 
 ```
 ├── data/                     		# Raw and processed datasets  
-├── project/						# Parent folder for this project
+├── project/				# Parent folder for this project
 	├── data_exploration.ipynb      # Jupyter notebook for analysis  
 	├── etl_pipeline_improved.py    # Python scripts for data processing and modeling  
 	├── requirements.txt          	# List of Python dependencies  
