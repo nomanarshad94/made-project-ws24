@@ -75,19 +75,19 @@ The analysis will utilize five key datasets:
 ```
 ├── data/                     		# Raw and processed datasets  
 ├── project/						# Parent folder for this project
-	├── data_exploration.ipynb/     # Jupyter notebook for analysis  
+	├── data_exploration.ipynb      # Jupyter notebook for analysis  
 	├── etl_pipeline_improved.py    # Python scripts for data processing and modeling  
 	├── requirements.txt          	# List of Python dependencies  
-	├── visuals/  			  		# Contain all graphs and plots generated for project
-	├── data-report.pdf				# Data report contains required information for etl pipeline and process   
+	├── visuals/  			# Contain all graphs and plots generated for project
+	├── data-report.pdf		# Data report contains required information for etl pipeline and process   
 	├── analysis-report.pdf         # Final analysis report contains results, research  and final analysis
-	├── unit_tests.py		        # Python script for unit tests
+	├── unit_tests.py		# Python script for unit tests
 	├── integration_tests.py        # Python script for integration tests
-	├── pipeline.sh         		# Bash script to run etl pipeline
-	├── tests.sh         			# Bash script to run unit tests and integration tests
+	├── pipeline.sh         	# Bash script to run etl pipeline
+	├── tests.sh         		# Bash script to run unit tests and integration tests
 ├── README.md                 		# Project overview and documentation  
-├── NOTICE.md						# Project details required for Apache 2.0 License
-└── LICENSE          				# License file. This project is licensed under Apache 2.0 
+├── NOTICE.md				# Project details required for Apache 2.0 License
+└── LICENSE          			# License file. This project is licensed under Apache 2.0 
 ```
 
 ## Getting Started  
